@@ -11,7 +11,7 @@ const Header = () => {
            text-sm sm:text-xl font-semibold dark:text-white "> <span className=' px-2
             py-1 bg-gradient-to-r from-orange-400 via-pink-500 to-pink-900 rounded-lg text-white  '>Blogify
          </span>Blog 
-      </Link>
+       </Link>
       <form >
         <TextInput
           type='search'
