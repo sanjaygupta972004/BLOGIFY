@@ -4,10 +4,10 @@ import { ApiError } from '../utils/ApiError.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
 import { validateEmail,validatePassword } from '../validators/user.validator.js'
 
-const signIn = AsyncHandler(async (req, res) => {
-    const { name, email, password } = req.body
-    if(!name || !email || !password) {
-        throw new ApiError(400,'Please provide name, email and password')
+const signUp = AsyncHandler(async (req, res) => {
+    const { username, email, password } = req.body
+    if(!username || !email || !password) {
+        throw new ApiError(400,'Please provide username, email and password')
     }
     if(!validateEmail(email)) {
         throw new ApiError(400, 'Please provide a valid email')
@@ -21,7 +21,7 @@ const signIn = AsyncHandler(async (req, res) => {
     }
 
     const user = await User.create({
-        name : name,
+        username : username,
         email : email,
         password : password
     })
@@ -38,7 +38,7 @@ const signIn = AsyncHandler(async (req, res) => {
 })
 
 export {
-    signIn
+    signUp
 }
 
 
