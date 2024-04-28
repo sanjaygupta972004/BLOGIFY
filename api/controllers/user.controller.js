@@ -55,8 +55,13 @@ const signIn = AsyncHandler(async (req, res) => {
         throw new ApiError(403, 'Invalid credentials')
     }
     const token = user.accessTokenGenerator()
+    const options = {
+        expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+        httpOnly: true
+    }
     return res
         .status(200)
+        .cookie('jwtToken', token, options)
         .json(new ApiResponse(200, { token }, 'User signed in successfully'))
 })
 
