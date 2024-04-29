@@ -2,43 +2,43 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { set } from 'mongoose';
+import { signInStart,signInSuccess,signInFailure } from '../redux/user/userSlice';
+import { useDispatch,useSelector } from 'react-redux';
 function SignIn() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.user);
+  const errorMessage = error;
+  
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return setErrorMessage('Please fill all fields.');
+      return dispatch(signInFailure('Please fill all fields.'));
     }
 
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      dispatch(signInStart());
       const response = await axios.post('/api/v1/users/sign-in', formData);
-      setLoading(false);
       if (response.statusText === 'OK') {
-        navigate('/');
+         dispatch(signInSuccess(response.data.data));
+         navigate('/');
       }
     } catch (error) {
       if (error.response) {
-        setErrorMessage(error.response.data.message);
+        dispatch(signInFailure(error.response.data.message));
       } else if (error.request) {
-        setErrorMessage(`Request error : ${error.request}`);
+        dispatch(signInFailure('Network error. Please try again.'));
       } else {
-        setErrorMessage(`Error : ${error.message}`);
+        dispatch(signInFailure(`An error occurred. Please try again.: ${error.message}`));
       }
-      setLoading(false);
     }
   };
     return (
