@@ -52,7 +52,7 @@ const signIn = AsyncHandler(async (req, res) => {
     }
     const isMatch = await user.isCorrectPassword(password)
     if(!isMatch) {
-        throw new ApiError(403, 'Invalid credentials')
+        throw new ApiError(401, 'Invalid credentials')
     }
     const token = user.accessTokenGenerator()
     const options = {
@@ -62,7 +62,10 @@ const signIn = AsyncHandler(async (req, res) => {
     return res
         .status(200)
         .cookie('jwtToken', token, options)
-        .json(new ApiResponse(200, { token }, 'User signed in successfully'))
+        .json(new ApiResponse(200, {
+            token,
+            user:user
+        }, 'User signed in successfully'))
 })
 
 export {
