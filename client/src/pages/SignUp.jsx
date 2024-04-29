@@ -12,8 +12,6 @@ export default function SignUp() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  console.log(loading)
-
   const navigate = useNavigate();
  
   const handleChange = (e) => {
@@ -59,9 +57,8 @@ export default function SignUp() {
             </span>
             Blog
           </Link>
-          <p className='text-[20px] font-sans mt-5'>
-            This is a blog project. You can sign up with your email and password
-            or with Google.
+          <p className='text-xl font-serif mt-5'>
+             Welcome to our blog project! Pls Sign Up or choose the quicker option: 'Sign Up with Google'
           </p>
         </div>
         {/* right */}
