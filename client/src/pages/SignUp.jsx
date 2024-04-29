@@ -58,7 +58,7 @@ export default function SignUp() {
             Blog
           </Link>
           <p className='text-xl font-serif mt-5'>
-             Welcome to our blog project! Pls Sign Up or choose the quicker option: 'Sign Up with Google'
+             Welcome to our blog Website! Pls create your Account... or choose the quicker option: 'Sign Up with Google'
           </p>
         </div>
         {/* right */}
