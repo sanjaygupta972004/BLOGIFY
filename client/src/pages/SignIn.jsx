@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import OAuth from '../components/OAuth';
 
 function SignIn() {
   const [formData, setFormData] = useState({
@@ -86,8 +87,9 @@ function SignIn() {
               gradientDuoTone='purpleToPink'
               type='submit'
               disabled={loading}
+              className='font-sans text-xl'
             >
-              {loading ? (
+              {loading ? ( 
                 <>
                   <Spinner size='sm' />
                   <span className='pl-3'>Loading...</span>
@@ -96,15 +98,16 @@ function SignIn() {
                 'Sign In'
               )}
             </Button>
+            <OAuth />
           </form>
-          <div className='flex gap-2 text-sm mt-5'>
+          <div className='flex gap-2 text-[17px] mt-5'>
             <span>Don't have an account?</span>
-            <Link to='/sign-up' className='text-blue-500'>
+            <Link to='/sign-up' className='text-blue-500 font-sans font-bold hover:underline'>
               Sign Up
             </Link>
           </div>
           {errorMessage && (
-            <Alert className='mt-5 font-sans text-xl' color='failure'>
+            <Alert className='mt-5 font-mono text-xl' color='failure'>
               {errorMessage}
             </Alert>
           )}
