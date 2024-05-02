@@ -2,11 +2,16 @@ import { Avatar, Button, Dropdown, DropdownDivider, Navbar, TextInput } from 'fl
 import { Link,useLocation } from 'react-router-dom'
 import { AiOutlineSearch} from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
-import {useSelector} from 'react-redux'
+import { FaSun } from "react-icons/fa6"
+import { useSelector, useDispatch } from 'react-redux'
+import { toggleTheme } from '../redux/theme/themeSlice';
 
 const Header = () => {
   const path = useLocation().pathname
- const { currentUser } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+  const { theme } = useSelector((state) => state.theme);
+  const { currentUser } = useSelector((state) => state.user)
+
   return (
       <Navbar className=' border-b-2'>
           <Link to="/" className="self-center whitespace-nowrap
@@ -25,12 +30,13 @@ const Header = () => {
       <Button className='w-12 h-10 lg:hidden' color='gray' pill >
         <AiOutlineSearch />
       </Button>
-      <div className=' flex gap-2 md:order-2 '>
-        <Button className=' w-12 h-10 hidden sm:inline ' color= "gray" pill>
-          <FaMoon/>
+      <div className=' flex gap-5 md:order-2 '>
+        <Button className=' w-12 h-12 hidden sm:inline ' color="gray" 
+          onClick={()=> dispatch(toggleTheme()) }>
+          {theme && theme=== 'light'?<FaSun />:<FaMoon/>}
         </Button>
         <Link to="/sign-in" >
-          <Button gradientDuoTone = "purpleToBlue" className= {`font-mono ${currentUser?"w-10 h-10":"w-15 h-15"} text-sm sm:text-xl`} >
+          <Button gradientDuoTone = "purpleToBlue" className= {`font-mono ${currentUser?"w-12 h-12":"w-15 h-15"} text-sm sm:text-xl`} >
             {currentUser ? (
               <Dropdown
               arrowIcon={false}
