@@ -20,11 +20,22 @@ const DashSidebar = () => {
       <SidebarItems>
         <SidebarItemGroup>
           <Link to= "/dashboard?tab=profile">
-            <Sidebar.Item icon={HiUser} label="User" active={tab === "profile"} labelColor ="dark" className="font-mono" >
+            <Sidebar.Item
+              icon={HiUser}
+              label="User"
+              active={tab === "profile"}
+              labelColor="dark"
+              className="font-mono"
+              as={"div"}
+              >
               Profile
             </Sidebar.Item> 
           </Link>
-          <Sidebar.Item icon={HiArrowNarrowRight} title="Logout" className=" cursor-pointer font-mono" labelColor="dark">
+          <Sidebar.Item
+            icon={HiArrowNarrowRight}
+            title="Logout"
+            className=" cursor-pointer font-mono"
+            labelColor="dark">
             Logout
           </Sidebar.Item>
         </SidebarItemGroup>

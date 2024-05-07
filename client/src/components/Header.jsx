@@ -53,11 +53,17 @@ const Header = () => {
                   <span className=' block truncate font-medium text-md' >{currentUser.user.email }</span>
                 </Dropdown.Header>
                 <Link to="/dashboard?tab=profile" >
-                  <Dropdown.Item>Profile</Dropdown.Item>
+                  <Dropdown.Item
+                    as={"div"}
+                  >Profile
+                  </Dropdown.Item>
                 </Link>
                 <DropdownDivider />
                 <Link to="/dashboard?tab=posts" >
-                  <Dropdown.Item>Sign Out</Dropdown.Item>
+                  <Dropdown.Item
+                    as={"div"}
+                  >Sign Out
+                  </Dropdown.Item>
                 </Link>
 
                 
