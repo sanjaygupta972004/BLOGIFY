@@ -106,15 +106,18 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
 
     const userData = {
         id : user._id,
-        name : user.name,
+        username : user.username,
         email: user.email,
         profileImage: user.profileImage
     }
      
     return res
         .status(201)
-        .json(new ApiResponse(201, userData, 'User signUp with google successfully'))
+        .json(new ApiResponse(201, { user: userData }, 'User signUp with google successfully'))
 })
+
+
+
 
 export {
     signUp,

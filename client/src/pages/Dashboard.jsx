@@ -14,7 +14,7 @@ const Dashboard = () => {
     }
   }, [location.search])
   
-  console.log(tab)
+
   return (
     <div className=' min-h-screen flex flex-col md:flex-row gap-3'>
       <div className='md:w-56 w-full'>

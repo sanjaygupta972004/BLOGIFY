@@ -19,7 +19,7 @@ const OAuth = () => {
     try {
         const resultFromGoogle = await signInWithPopup(auth, provider);
         const user = resultFromGoogle.user;
-        console.log(user);
+     
         const googleData = {
             username:  user.displayName,
             email: user.email,

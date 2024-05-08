@@ -21,8 +21,6 @@ const DashProfile = () => {
     }
   }
 
- 
-
   const upLoadFile = async (imageFile) => {
     if (!imageFile) return;
     const fileName =  imageFile.name + new Date().getTime()  
@@ -68,7 +66,7 @@ const DashProfile = () => {
        <div className='w-[105px] h-[105px] shadow-md overflow-hidden rounded-full self-center '>
           <img
             className='w-full h-full object-cover border-5 border-[lightgray] '
-            src={imageUrl || currentUser.user.profileImage} alt="userImg"
+            src={currentUser.user.profileImage} alt="profile-image" 
             onClick={() => {
               imageFileRef.current.click()
             }}/>
