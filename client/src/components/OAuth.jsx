@@ -19,10 +19,12 @@ const OAuth = () => {
     try {
         const resultFromGoogle = await signInWithPopup(auth, provider);
         const user = resultFromGoogle.user;
+        console.log(user);
         const googleData = {
             username:  user.displayName,
             email: user.email,
-            password: user.uid  
+            password: user.uid,
+            profileImage: user.photoURL
         }
         const response = await axios.post('/api/v1/users/google-auth', googleData);
         if (response.status = 200 || response.status === 201) {

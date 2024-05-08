@@ -68,7 +68,7 @@ const DashProfile = () => {
        <div className='w-[105px] h-[105px] shadow-md overflow-hidden rounded-full self-center '>
           <img
             className='w-full h-full object-cover border-5 border-[lightgray] '
-            src={imageUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1FDNnI6Mh_eW4PGWdHB0CHxKfIfggOL7ZZoAN9lyYLPgobX49CNbktr9vMO0Ma3i461I&usqp=CAU"} alt="userImg"
+            src={imageUrl || currentUser.user.profileImage} alt="userImg"
             onClick={() => {
               imageFileRef.current.click()
             }}/>
@@ -85,7 +85,7 @@ const DashProfile = () => {
           type="email" id="email"
           defaultValue={currentUser.user.email} />
         <TextInput
-          placeholder='********'
+          placeholder='password'
           label="password"
           type="password"
           id="password" />

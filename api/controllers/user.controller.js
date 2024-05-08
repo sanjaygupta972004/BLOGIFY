@@ -69,8 +69,8 @@ const signIn = AsyncHandler(async (req, res) => {
 })
 
 const signInWithGoogle = AsyncHandler(async (req, res) => {
-    const { username, email, password } = req.body
-    if(!username || !email || !password) {
+    const { username, email, password,profileImage } = req.body
+    if(!username || !email || !password || username === '' || email === '' || password === '') {
         throw new ApiError(400,'Please provide username, email and password')
     }
     if(!validateEmail(email)) {
@@ -99,13 +99,16 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
     const user = await User.create({
         username : username,
         email : email,
-        password : correctPassword
+        password: correctPassword,
+        profileImage: profileImage
+        
     })
 
     const userData = {
         id : user._id,
         name : user.name,
-        email : user.email
+        email: user.email,
+        profileImage: user.profileImage
     }
      
     return res

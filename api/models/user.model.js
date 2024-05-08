@@ -19,6 +19,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    profileImage: {
+      type: String,
+      default: "https://i.pinimg.com/474x/00/9e/10/009e1061d2c4c46c2e48d21bdb41becb.jpg",
+    },
+    
   },
   { timestamps: true }
 );
