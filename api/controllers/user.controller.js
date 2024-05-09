@@ -3,6 +3,7 @@ import { User } from '../models/user.model.js'
 import { ApiError } from '../utils/ApiError.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
 import { validateEmail,validatePassword } from '../validators/user.validator.js'
+import { isValidObjectId } from 'mongoose'
 
 const signUp = AsyncHandler(async (req, res) => {
     const { username, email, password } = req.body
@@ -23,20 +24,21 @@ const signUp = AsyncHandler(async (req, res) => {
     const user = await User.create({
         username : username,
         email : email,
-        password : password
+        password: password,
+
     })
 
     const userData = {
         id : user._id,
         name : user.name,
-        email : user.email
+        email: user.email,
+        profileImage: user.profileImage
     }
      
     return res
         .status(201)
         .json(new ApiResponse(201, userData, 'User created successfully'))
 })
-
 
 const signIn = AsyncHandler(async (req, res) => {
     const { email, password } = req.body
@@ -52,19 +54,25 @@ const signIn = AsyncHandler(async (req, res) => {
     }
     const isMatch = await user.isCorrectPassword(password)
     if(!isMatch) {
-        throw new ApiError(401, 'Invalid credentials')
+        throw new ApiError(401, 'Invalid password provided ')
     }
     const token = user.accessTokenGenerator()
     const options = {
         expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
         httpOnly: true
     }
+    const userData = {
+        id : user._id,
+        username : user.username,
+        email: user.email,
+        profileImage: user.profileImage
+    }
     return res
         .status(200)
         .cookie('jwtToken', token, options)
         .json(new ApiResponse(200, {
             token,
-            user:user
+            user:userData
         }, 'User signed in successfully'))
 })
 
@@ -116,13 +124,97 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
         .json(new ApiResponse(201, { user: userData }, 'User signUp with google successfully'))
 })
 
+const signOut = AsyncHandler(async (req, res) => { })
+
+
+const updateProfileImage = AsyncHandler(async (req, res) => {
+    const { profileImage } = req.body
+    const { userId } = req.params
+    if (!profileImage || profileImage === '') {
+        throw new ApiError(400, 'Please provide profile image')
+    }
+    const { id } = req.user
+    const user = await User.findById(userId).select("-password ")
+    if (!user) {
+        throw new ApiError(404, 'User is not found')
+    }
+    if(!isValidObjectId(userId)) {
+        throw new ApiError(400, 'Invalid user id')
+    }
+    if (id.toString() !== userId.toString()) {
+        throw new ApiError(403, 'You are not authorized to update profile image this user')
+    }
+
+    user.profileImage = profileImage
+    await user.save()
+    
+    return res
+        .status(200)
+        .json(new ApiResponse(200,  user , 'Profile image updated successfully'))
+
+})
+
+
+const updateProfile = AsyncHandler(async (req, res) => {
+    const { username, email, password } = req.body
+    const { userId } = req.params
+  
+    if (!username.trim() || !email.trim() || !password.trim()) {
+          throw new ApiError(400, 'Please provide username, email and password');
+    }
+
+    if (!validateEmail(email)) {
+        throw new ApiError(400, 'Please provide a valid email')
+    }
+    if (!validatePassword(password)) {
+        throw new ApiError(400, validatePassword(password))
+    }
+    const { id } = req.user
+    
+    if(!isValidObjectId(userId)) {
+        throw new ApiError(400, 'Invalid user id')
+    }
+
+    if(id.toString() !== userId.toString()) {
+        throw new ApiError(403, 'You are not authorized to updateProfile this user')
+    }
+    const user = await User.findById(userId)
+    if(!user) {
+        throw new ApiError(404, 'User is not found')
+    }
+
+    user.username = username
+    user.email = email
+    user.password = password
+
+    await user.save()
+    
+    const updatedUserData = {
+        id : user._id,
+        username : user.username,
+        email: user.email,
+        profileImage: user.profileImage
+    }
+  
+   
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {user:updatedUserData}, 'User profile updated successfully'))
+})
+
+
+const deleteUser = AsyncHandler(async (req, res) => { })
+
+
 
 
 
 export {
     signUp,
     signIn,
-    signInWithGoogle
+    signInWithGoogle,
+    updateProfileImage,
+    updateProfile
 }
 
 
