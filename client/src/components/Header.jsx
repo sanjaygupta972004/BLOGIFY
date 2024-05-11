@@ -11,7 +11,6 @@ const Header = () => {
   const dispatch = useDispatch()
   const { theme } = useSelector((state) => state.theme);
   const { currentUser } = useSelector((state) => state.user)
-
   return (
       <Navbar className=' border-b-2'>
           <Link to="/" className="self-center whitespace-nowrap
@@ -49,8 +48,8 @@ const Header = () => {
                 />
               }  >
                 <Dropdown.Header>
-                  <span className=' block text-sm  text-start '>@{currentUser.user.username.toLowerCase()}</span>
-                  <span className=' block truncate font-medium text-md' >{currentUser.user.email }</span>
+                  <span className=' block text-sm  text-start '>@{currentUser.user?.username.toLowerCase()}</span>
+                  <span className=' block truncate font-medium text-md' >{currentUser.user?.email }</span>
                 </Dropdown.Header>
                 <Link to="/dashboard?tab=profile" >
                   <Dropdown.Item

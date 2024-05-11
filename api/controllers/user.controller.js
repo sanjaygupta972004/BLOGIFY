@@ -105,7 +105,7 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
     }
 
     const user = await User.create({
-        username : username,
+        username : username.toLowerCase().trim(),
         email : email,
         password: correctPassword,
         profileImage: profileImage

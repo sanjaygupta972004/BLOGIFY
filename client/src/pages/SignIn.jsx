@@ -1,49 +1,30 @@
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link,useNavigate } from 'react-router-dom';
+import { useSelector,useDispatch } from 'react-redux';
 import OAuth from '../components/OAuth';
+import { SignInHandler } from '../api/auth/apiService';
 
-function SignIn() {
+
+export default function SignIn() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.id]: e.target.value.trim()});
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
-
  const { loading, error } = useSelector((state) => state.user);
  const errorMessage = error;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
-      return dispatch(signInFailure('Please fill all fields.'));
-    }
-
-    try {
-      dispatch(signInStart());
-      const response = await axios.post('/api/v1/users/sign-in', formData);
-      if (response.statusText === 'OK') {
-         dispatch(signInSuccess(response.data.data));
-         navigate('/');
-      }
-    } catch (error) {
-      if (error.response) {
-        dispatch(signInFailure(error.response.data.message));
-      } else if (error.request) {
-        dispatch(signInFailure('Network error. Please try again.'));
-      } else {
-        dispatch(signInFailure(`An error occurred. Please try again.: ${error.message}`));
-      }
-    }
+    console.log(SignInHandler);
+    await SignInHandler(formData,navigate,dispatch);
   };
 
   return (
@@ -117,4 +98,3 @@ function SignIn() {
   );
 }
 
-export default SignIn;
