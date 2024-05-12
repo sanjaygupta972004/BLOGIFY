@@ -13,7 +13,8 @@ const OAuth = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const auth = getAuth(app);
-    const handleGoogleAuth = async () => {
+   
+  const handleGoogleAuth = async () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
     try {

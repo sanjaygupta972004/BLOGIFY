@@ -1,17 +1,16 @@
-import { Button, TextInput } from 'flowbite-react'
+import { Alert, Button, TextInput } from 'flowbite-react'
 import { useSelector } from 'react-redux'
 import { useState, useRef, useEffect } from 'react'
-import {getStorage,ref,uploadBytesResumable,getDownloadURL} from 'firebase/storage'
-
-import { app } from '../firebase'
+import { upLoadImageFile } from '../utils/helper'
 
 
 const DashProfile = () => {
   const { currentUser } = useSelector(state => state.user)  
   const [imageFile, setImageFile] = useState(null)
   const [imageUrl, setImageUrl] = useState(null)
-  const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null)
-  const [imageFileUploadError, setImageFileUploadError] = useState(null)
+  const [progress, setProgress] = useState(0)
+  const [error, setError] = useState(null)
+
   const imageFileRef = useRef()
 
   const handleFileChange = (e) => {
@@ -21,35 +20,20 @@ const DashProfile = () => {
     }
   }
 
-  const upLoadFile = async (imageFile) => {
-    if (!imageFile) return;
-    const fileName =  imageFile.name + new Date().getTime()  
 
-    const storage = getStorage(app)
-    const storageRef = ref(storage, fileName)
-    const uploadTask = uploadBytesResumable(storageRef, imageFile)
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        setImageFileUploadProgress(progress.toFixed(0))
-
-      },
-      (error) => {
-        setImageFileUploadError(`file must be less than 2MB and must be an image file: ${error.message}`)
-    }, () => {
-         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-           setImageUrl(downloadURL)
-           console.log('File available at', downloadURL)
-    })
-      }
-    )
-  }
-
-  useEffect(() => {
-    if (imageFile) {
-      upLoadFile(imageFile)
+  useEffect( () => {
+   if(imageFile) {
+     const handleUploadImg = async () => {
+       try {
+          await upLoadImageFile(imageFile, setProgress, setError, setImageUrl)
+        }
+      catch (error) {
+       setError("An error occurred during image upload")
+       }
+     }
+     handleUploadImg()
     }
+   
   }, [imageFile])
 
 
@@ -66,7 +50,7 @@ const DashProfile = () => {
        <div className='w-[105px] h-[105px] shadow-md overflow-hidden rounded-full self-center '>
           <img
             className='w-full h-full object-cover border-5 border-[lightgray] '
-            src={currentUser.user.profileImage} alt="profile-image" 
+            src={currentUser.user?.profileImage} alt="profile-image" 
             onClick={() => {
               imageFileRef.current.click()
             }}/>
@@ -76,12 +60,12 @@ const DashProfile = () => {
           label="username"
           type="text"
           id="username"
-          defaultValue={currentUser.user.username} />
+          defaultValue={currentUser.user?.username} />
         <TextInput
           placeholder='email'
           label="email"
           type="email" id="email"
-          defaultValue={currentUser.user.email} />
+          defaultValue={currentUser.user?.email} />
         <TextInput
           placeholder='password'
           label="password"
@@ -98,9 +82,20 @@ const DashProfile = () => {
             Logout
           </Button>
         </div>
-        
-    </form>
-
+      <div className='my-4 space-y-3'>
+       <div>
+            {
+              error && <Alert type='error'>{error}</Alert>  
+           }
+        </div>
+        <div>
+          {
+            progress > 0 && <Alert type='info'>Uploading {progress}%</Alert>
+          }
+          </div>
+        </div>
+          
+      </form>
  </div>
   )
 }
