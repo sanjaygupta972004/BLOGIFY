@@ -95,13 +95,20 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
             expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
             httpOnly: true
         }
+        const userData = {
+            id : preUser._id,
+            username : preUser.username,
+            email: preUser.email,
+            profileImage: preUser.profileImage
+        }
         return res
             .status(200)
             .cookie('jwtToken', token, options)
             .json(new ApiResponse(200, {
                 token,
-                user:preUser
-            }, 'User signed in with google successfully'))
+                user: userData 
+            }
+            , 'User signed in with google successfully'))
     }
 
     const user = await User.create({
@@ -181,6 +188,11 @@ const updateProfile = AsyncHandler(async (req, res) => {
     const user = await User.findById(userId)
     if(!user) {
         throw new ApiError(404, 'User is not found')
+    }
+
+    const oldUser = await User.findOne({ email })
+    if(oldUser ) {
+        throw new ApiError(400, 'User already exists with this email')
     }
 
     user.username = username

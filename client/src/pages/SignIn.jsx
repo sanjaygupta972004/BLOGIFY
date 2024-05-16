@@ -80,6 +80,11 @@ export default function SignIn() {
               )}
             </Button>
             <OAuth />
+             {errorMessage && (
+            <Alert className='mt-5 font-mono text-xl' color='failure'>
+              {errorMessage}
+            </Alert>
+          )}
           </form>
           <div className='flex gap-2 text-[17px] mt-5'>
             <span>Don't have an account?</span>
@@ -87,11 +92,6 @@ export default function SignIn() {
               Sign Up
             </Link>
           </div>
-          {errorMessage && (
-            <Alert className='mt-5 font-mono text-xl' color='failure'>
-              {errorMessage}
-            </Alert>
-          )}
         </div>
       </div>
     </div>
