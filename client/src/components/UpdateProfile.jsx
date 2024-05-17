@@ -1,16 +1,21 @@
 
 import { Button, Card, Alert, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
-import { updateProfileAsync} from '../redux/user/userSlice'
+import { updateProfileAsync} from '../redux/profile/profileSlice'
 import { useDispatch,useSelector } from 'react-redux'
 import { set } from "mongoose";
+
 export default function UpdateProfile() {
     const [showForm, setShowForm] = useState(false);
-    const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
+    email: "",
+    username: "",
+    password: ""
     });
   
   const dispatch = useDispatch()
-  const { currentUser,profileError,loading } = useSelector(state => state.user)
+  const { currentUser } = useSelector(state => state.user)
+  const { loading, profileError } = useSelector(state => state.profile)
 
   const userId = currentUser.user?.id
 
@@ -22,17 +27,24 @@ export default function UpdateProfile() {
         setFormData({ ...formData, [e.target.id]: e.target.value });
     }
   
-    const handleSubmit = () => {
-      dispatch(updateProfileAsync(profileParameters))  
-      if(profileError===null) {
+  const handleSubmit =  () => {
+     dispatch(updateProfileAsync(profileParameters))  
+      if(!profileError){
         setShowForm(false)
-      }
-    }
+      }   
+      setFormData({
+        email: "",
+        username: "",
+        password: ""
+      })
+  }
+        
+    
 
 return (
         <Card className="max-w-sm min-h-content">
       {!showForm && (
-      <Button className=" w-full h-full text-2xl font-serif  "  onClick={() => setShowForm(true)}>Update-Profile</Button>
+      <Button className=" w-full h-full text-2xl font-serif " onClick={() => setShowForm(true)}>Update-Profile</Button>
          )}  
         {showForm && (
          <form className="flex flex-col gap-4">

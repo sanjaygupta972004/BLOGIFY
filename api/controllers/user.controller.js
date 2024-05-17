@@ -119,6 +119,13 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
         
     })
 
+    const token = user.accessTokenGenerator()
+    const options = {
+        expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+        httpOnly: true
+    }
+
+
     const userData = {
         id : user._id,
         username : user.username,
@@ -128,7 +135,11 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
      
     return res
         .status(201)
-        .json(new ApiResponse(201, { user: userData }, 'User signUp with google successfully'))
+        .cookie('jwtToken', token, options)
+        .json(new ApiResponse(201, {
+            token,
+            user: userData
+         }, 'User signUp with google successfully'))
 })
 
 const signOut = AsyncHandler(async (req, res) => { })
