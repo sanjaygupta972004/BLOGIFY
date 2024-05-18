@@ -1,9 +1,10 @@
 
 import { Button, Card, Alert, Label, Spinner, TextInput } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateProfileAsync} from '../redux/profile/profileSlice'
-import { useDispatch,useSelector } from 'react-redux'
-import { set } from "mongoose";
+import { useDispatch, useSelector } from 'react-redux'
+import { signInSuccess } from "../redux/user/userSlice";
+
 
 export default function UpdateProfile() {
     const [showForm, setShowForm] = useState(false);
@@ -15,29 +16,28 @@ export default function UpdateProfile() {
   
   const dispatch = useDispatch()
   const { currentUser } = useSelector(state => state.user)
-  const { loading, profileError } = useSelector(state => state.profile)
+  const { loading, profileError,userProfile } = useSelector(state => state.profile)
 
   const userId = currentUser.user?.id
-
-  const profileParameters = {
-    formData: formData,
-    userId: userId
-  }
-    const handleChange = (e) => {
+  const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value });
     }
   
-  const handleSubmit =  () => {
-     dispatch(updateProfileAsync(profileParameters))  
-      if(!profileError){
-        setShowForm(false)
-      }   
-      setFormData({
-        email: "",
-        username: "",
-        password: ""
-      })
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(userId){
+    dispatch(updateProfileAsync({formData,userId}))  
+    }
   }
+
+  useEffect(() => {
+    if (userProfile) {
+      dispatch(signInSuccess(userProfile))
+      setFormData({ email: "", username: "", password: "" });
+      setShowForm(false);
+    }
+   },
+    [userProfile,dispatch])
         
     
 

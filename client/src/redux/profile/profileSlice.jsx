@@ -4,12 +4,11 @@ import { updateProfile,updateProfileImage } from '../../api/user/apiService';
 
 export const updateProfileAsync = createAsyncThunk(
     'profile/updateProfile',
-    async (profilePeraMeter, { rejectWithValue }) => {
+    async ({formData,userId}, { rejectWithValue }) => {
         try {
-            const userData = await updateProfile(profilePeraMeter);
+            const userData = await updateProfile({formData,userId});
             return userData;
         } catch (error) {
-            console.log(error.message)
             return rejectWithValue(error.message);
         }
     }
