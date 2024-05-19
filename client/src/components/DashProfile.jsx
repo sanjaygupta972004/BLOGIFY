@@ -1,22 +1,29 @@
 import { Alert } from 'flowbite-react'
-import { useSelector,} from 'react-redux'
 import { useState, useRef, useEffect } from 'react'
 import { upLoadImageFile } from '../utils/helper'
 import UpdateProfile from './UpdateProfile'
+import { updateProfileImageAsync } from '../redux/profile/profileSlice'
+import { useDispatch,useSelector } from 'react-redux'
 
 const DashProfile = () => {
   const { currentUser } = useSelector(state => state.user)  
   const [imageFile, setImageFile] = useState(null)
-  const [imageUrl, setImageUrl] = useState(null)
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState(null)
- 
+  const dispatch = useDispatch()
+  const { loading, profileImageError } = useSelector(state => state.profile)
+  const userId = currentUser.user?.id
+
   const imageFileRef = useRef()
+  const timeRef = useRef(null)
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]
     if (file) {
       setImageFile(file)
+    }
+    if(timeRef.current) {
+      clearTimeout(timeRef.current)
     }
   }
 
@@ -24,16 +31,25 @@ const DashProfile = () => {
    if(imageFile) {
      const handleUploadImg = async () => {
        try {
-          await upLoadImageFile(imageFile, setProgress, setError, setImageUrl)
-        }
+         const imageUrl = await upLoadImageFile(imageFile, setProgress, setError)
+         if (imageUrl) {
+           timeRef.current = setTimeout(() => {
+             dispatch(updateProfileImageAsync({ imageUrl, userId }))
+           },1000)
+         }
+       }
       catch (error) {
-       setError("An error occurred during image upload")
+       setError("An error occurred during upload and update profile image. Please try again.")
        }
      }
      handleUploadImg()
     }
-   
-  }, [imageFile])
+    return () => {
+      if(timeRef.current) {
+        clearTimeout(timeRef.current)
+      } 
+   }
+  }, [imageFile,dispatch,userId])
 
 
   return (
@@ -66,19 +82,21 @@ const DashProfile = () => {
         </div>
         <div>
             <UpdateProfile/>
-         </div>
-        <div className='my-4 space-y-3'> 
-        <div>
+        </div>
+        <div className='my-4 space-y-3 font-serif text-2xl'> 
             {
               error && <Alert type='error'>{error}</Alert>  
-           }
-        </div>
-        <div>
-          {
-            progress > 0 && <Alert type='info'>Uploading {progress}%</Alert>
-          }
+            }
+            {
+              profileImageError && <Alert type='error'>{profileImageError}</Alert>
+            }
+            {
+              loading && <Alert type='info'>Loading...</Alert>
+            } 
+            {
+            progress == 100.00 ? <Alert type='info'>profile-Img Uploaded successfully</Alert> : progress > 0 ? <Alert type='success'>Uploading {progress}</Alert> : null
+            }    
           </div>
-        </div>
       </form>
  </div>
   )

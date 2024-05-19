@@ -165,10 +165,17 @@ const updateProfileImage = AsyncHandler(async (req, res) => {
 
     user.profileImage = profileImage
     await user.save()
-    
+    const updatedUserData = {
+        id : user._id,
+        username : user.username,
+        email: user.email,
+        profileImage: user.profileImage
+    }
     return res
         .status(200)
-        .json(new ApiResponse(200,  user , 'Profile image updated successfully'))
+        .json(new ApiResponse(200, {
+            user: updatedUserData
+        }, 'Profile image updated successfully'))
 
 })
 

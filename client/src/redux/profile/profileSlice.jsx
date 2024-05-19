@@ -16,9 +16,9 @@ export const updateProfileAsync = createAsyncThunk(
 
 export const updateProfileImageAsync = createAsyncThunk(
     'profile/updateProfileImage',
-    async (imageUrl,userId, { rejectWithValue }) => {
+    async ({ imageUrl, userId }, { rejectWithValue }) => {
         try {
-            const userData = await updateProfileImage(imageUrl,userId);
+            const userData = await updateProfileImage({ imageUrl, userId })
             return userData;
         } catch (error) {
             return rejectWithValue(error.message);

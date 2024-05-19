@@ -2,7 +2,7 @@ import {getStorage,ref,uploadBytesResumable,getDownloadURL} from 'firebase/stora
 import { app } from "../firebase"
 
 
-export const upLoadImageFile = async (imageFile, setProgress, setError, setImageUrl) => {
+export const upLoadImageFile = async (imageFile, setProgress, setError) => {
   try {
     if (!imageFile) {
       setError('Please select an image file');
@@ -20,8 +20,7 @@ export const upLoadImageFile = async (imageFile, setProgress, setError, setImage
     });
     await uploadTask;
     try {
-      const url = await getDownloadURL(uploadTask.snapshot.ref);
-      setImageUrl && setImageUrl(url);
+      return await getDownloadURL(uploadTask.snapshot.ref);
     }catch(error){
       setError && setError("An error occurred during downloading image url ")
     }
