@@ -30,7 +30,7 @@ const signUp = AsyncHandler(async (req, res) => {
 
     const userData = {
         id : user._id,
-        name : user.name,
+        username : user.username,
         email: user.email,
         profileImage: user.profileImage
     }
@@ -142,7 +142,15 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
          }, 'User signUp with google successfully'))
 })
 
-const signOut = AsyncHandler(async (req, res) => { })
+const signOut = AsyncHandler(async (req, res) => { 
+    if (!req.user) {
+        throw new ApiError(400, 'You are not signed in pls sign in first')
+    }
+    return res
+        .status(200)
+        .clearCookie('jwtToken')
+        .json(new ApiResponse(200, {}, 'User signed out successfully'))
+})
 
 
 const updateProfileImage = AsyncHandler(async (req, res) => {
@@ -233,7 +241,28 @@ const updateProfile = AsyncHandler(async (req, res) => {
 })
 
 
-const deleteUser = AsyncHandler(async (req, res) => { })
+const deleteUser = AsyncHandler(async (req, res) => { 
+    const { userId } = req.params
+    const { id } = req.user
+    const user = await User.findById(userId)
+    if(!user) {
+        throw new ApiError(404, 'User is not found')
+    } 
+    if(!isValidObjectId(userId)) {
+        throw new ApiError(400, 'Invalid user id')
+    }
+    if(id.toString() !== userId.toString()) {
+        throw new ApiError(403, 'You are not authorized to delete this user')
+    }
+
+    await User.deleteOne({
+        _id: userId
+    })
+ 
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {}, 'User deleted successfully'))
+})
 
 
 
@@ -243,8 +272,10 @@ export {
     signUp,
     signIn,
     signInWithGoogle,
+    signOut,
     updateProfileImage,
-    updateProfile
+    updateProfile,
+    deleteUser
 }
 
 
