@@ -32,7 +32,7 @@ const Header = () => {
       <div className=' flex gap-5 md:order-2 '>
         <Button className=' w-12 h-12 hidden sm:inline ' color="gray" 
           onClick={()=> dispatch(toggleTheme()) }>
-          {theme && theme=== 'light'?<FaSun />:<FaMoon/>}
+          {theme && theme=== 'light'?<FaMoon />:<FaSun/>}
         </Button>
         <Link to="/sign-in" >
           <Button gradientDuoTone = "purpleToBlue" className= {`font-mono ${currentUser?"w-12 h-12":"w-15 h-15"} text-sm sm:text-xl`} >
@@ -58,10 +58,10 @@ const Header = () => {
                   </Dropdown.Item>
                 </Link>
                 <DropdownDivider />
-                <Link to="/dashboard?tab=posts" >
+                <Link to="/dashboard?tab=sign-out" >
                   <Dropdown.Item
                     as={"div"}
-                  >Sign Out
+                  >Sign-Out
                   </Dropdown.Item>
                 </Link>
 

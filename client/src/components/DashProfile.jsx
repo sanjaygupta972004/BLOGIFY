@@ -3,7 +3,8 @@ import { useState, useRef, useEffect } from 'react'
 import { upLoadImageFile } from '../utils/helper'
 import UpdateProfile from './UpdateProfile'
 import { updateProfileImageAsync } from '../redux/profile/profileSlice'
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+
 
 const DashProfile = () => {
   const { currentUser } = useSelector(state => state.user)  

@@ -18,7 +18,7 @@ const DashSidebar = () => {
   return (
     <Sidebar className='w-full md:w-56 '>
       <SidebarItems>
-        <SidebarItemGroup>
+        <SidebarItemGroup className='gap-4 sm:font-2xl font-xl '>
           <Link to= "/dashboard?tab=profile">
             <Sidebar.Item
               icon={HiUser}
@@ -31,13 +31,18 @@ const DashSidebar = () => {
               Profile
             </Sidebar.Item> 
           </Link>
+          <Link to= "/dashboard?tab=sign-out">
           <Sidebar.Item
             icon={HiArrowNarrowRight}
             title="Logout"
             className=" cursor-pointer font-mono"
-            labelColor="dark">
-            Logout
-          </Sidebar.Item>
+            labelColor="dark"
+            as={"div"}
+            >
+              
+            Sign-Out
+            </Sidebar.Item>
+          </Link>
         </SidebarItemGroup>
       </SidebarItems>
   </Sidebar>
