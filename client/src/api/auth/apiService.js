@@ -8,6 +8,7 @@ import {
   signOutFailure,
 } from "../../redux/user/userSlice";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const SignInHandler = async (formData, navigate, dispatch) => {
   try {
@@ -22,6 +23,7 @@ const SignInHandler = async (formData, navigate, dispatch) => {
     if (response.status === 200) {
       dispatch(signInSuccess(response.data.data));
       navigate('/');
+      toast.success('Signed in successfully.');
     } else {
       dispatch(signInFailure(response.data.message || 'Failed to sign in.'));
     }
@@ -56,6 +58,7 @@ const SignUpHandler = async (formData, navigate, setError, setLoading) => {
       setError(data.message);
     } else {
       navigate('/sign-in');
+      toast.success('Account created successfully. Please sign in.');
     }
   } catch (error) {
     setError(error.message);
@@ -75,6 +78,7 @@ const signOutHandler = async (dispatch, navigate) => {
     if (response.status === 200) {
       dispatch(signOutSuccess());
       navigate('/');
+      toast.success('Signed out successfully.');
     } else {
       dispatch(signOutFailure(response.data.message || 'Failed to sign out.'));
     }

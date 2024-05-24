@@ -17,7 +17,7 @@ const DashSidebar = () => {
   return (
     <Sidebar className='w-full md:w-56 '>
       <SidebarItems>
-        <SidebarItemGroup className='gap-4 sm:font-2xl font-xl '>
+        <SidebarItemGroup className=" gap-y-5 sm:font-2xl font-xl ">
           <Link to= "/dashboard?tab=profile">
             <Sidebar.Item
               icon={HiUser}

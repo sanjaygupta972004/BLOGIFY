@@ -11,6 +11,15 @@ const Header = () => {
   const dispatch = useDispatch()
   const { theme } = useSelector((state) => state.theme);
   const { currentUser } = useSelector((state) => state.user)
+
+  const toggleThemeHandler = () => {
+    if (theme === "dark") {
+     document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+    }
+    dispatch(toggleTheme());
+  }
   return (
       <Navbar className=' border-b-2'>
           <Link to="/" className="self-center whitespace-nowrap
@@ -31,7 +40,7 @@ const Header = () => {
       </Button>
       <div className=' flex gap-5 md:order-2 '>
         <Button className=' w-12 h-12 hidden sm:inline ' color="gray" 
-          onClick={()=> dispatch(toggleTheme()) }>
+          onClick={toggleThemeHandler }>
           {theme && theme=== 'light'?<FaMoon />:<FaSun/>}
         </Button>
         <Link to="/sign-in" >
