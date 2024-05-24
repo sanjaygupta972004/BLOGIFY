@@ -2,7 +2,6 @@ import React from 'react'
 import { Sidebar, SidebarItemGroup, SidebarItems } from "flowbite-react";
 import { HiArrowNarrowRight, HiUser } from "react-icons/hi";
 import { Link,useLocation } from "react-router-dom";
-
 import { useState,useEffect } from 'react'
 
 const DashSidebar = () => {
@@ -35,11 +34,11 @@ const DashSidebar = () => {
           <Sidebar.Item
             icon={HiArrowNarrowRight}
             title="Logout"
+            active={tab === "sign-out"}
             className=" cursor-pointer font-mono"
             labelColor="dark"
             as={"div"}
             >
-              
             Sign-Out
             </Sidebar.Item>
           </Link>

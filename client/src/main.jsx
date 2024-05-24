@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
@@ -8,6 +9,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 import ThemeProvider from './components/ThemeProvider.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+if (typeof global === 'undefined') {
+  global = window;
+}
+global.Buffer = Buffer;
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

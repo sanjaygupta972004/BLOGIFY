@@ -5,7 +5,7 @@ import { FaMoon } from "react-icons/fa";
 import { FaSun } from "react-icons/fa6"
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleTheme } from '../redux/theme/themeSlice';
-
+import React from 'react'
 const Header = () => {
   const path = useLocation().pathname
   const dispatch = useDispatch()
