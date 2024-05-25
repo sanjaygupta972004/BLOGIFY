@@ -4,6 +4,7 @@ import { ApiError } from '../utils/ApiError.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
 import { validateEmail,validatePassword } from '../validators/user.validator.js'
 import { isValidObjectId } from 'mongoose'
+import { isAdmin } from '../middlewares/isAdmin.middleware.js'
 
 const signUp = AsyncHandler(async (req, res) => {
     const { username, email, password } = req.body
@@ -32,7 +33,8 @@ const signUp = AsyncHandler(async (req, res) => {
         id : user._id,
         username : user.username,
         email: user.email,
-        profileImage: user.profileImage
+        profileImage: user.profileImage,
+        isAdmin: user.isAdmin
     }
      
     return res
@@ -65,7 +67,8 @@ const signIn = AsyncHandler(async (req, res) => {
         id : user._id,
         username : user.username,
         email: user.email,
-        profileImage: user.profileImage
+        profileImage: user.profileImage,
+        isAdmin: user.isAdmin
     }
     return res
         .status(200)
@@ -99,7 +102,8 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
             id : preUser._id,
             username : preUser.username,
             email: preUser.email,
-            profileImage: preUser.profileImage
+            profileImage: preUser.profileImage,
+            isAdmin: preUser.isAdmin
         }
         return res
             .status(200)
@@ -115,7 +119,8 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
         username : username.toLowerCase().trim(),
         email : email,
         password: correctPassword,
-        profileImage: profileImage
+        profileImage: profileImage,
+        isAdmin: user.isAdmin
         
     })
 
@@ -130,7 +135,8 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
         id : user._id,
         username : user.username,
         email: user.email,
-        profileImage: user.profileImage
+        profileImage: user.profileImage,
+        isAdmin: user.isAdmin
     }
      
     return res
@@ -177,7 +183,8 @@ const updateProfileImage = AsyncHandler(async (req, res) => {
         id : user._id,
         username : user.username,
         email: user.email,
-        profileImage: user.profileImage
+        profileImage: user.profileImage,
+        isAdmin: user.isAdmin
     }
     return res
         .status(200)
@@ -231,7 +238,8 @@ const updateProfile = AsyncHandler(async (req, res) => {
         id : user._id,
         username : user.username,
         email: user.email,
-        profileImage: user.profileImage
+        profileImage: user.profileImage,
+        isAdmin: user.isAdmin
     }
   
    

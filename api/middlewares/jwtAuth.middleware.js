@@ -18,7 +18,8 @@ export const jwtAuthVerify = AsyncHandler(async (req, _, next) => {
     const userData = {
         id: user._id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        isAdmin: user.isAdmin,
     };
         req.user = userData;
         next();

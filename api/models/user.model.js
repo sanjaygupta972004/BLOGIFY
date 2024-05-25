@@ -23,6 +23,10 @@ const userSchema = new Schema(
       type: String,
       default: "https://i.pinimg.com/474x/00/9e/10/009e1061d2c4c46c2e48d21bdb41becb.jpg",
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     
   },
   { timestamps: true }
@@ -44,7 +48,9 @@ userSchema.methods.accessTokenGenerator = function () {
     return jwt.sign(
         {
             id: this._id,
-            email: this.email,
+           email: this.email,
+           isAdmin: this.isAdmin,
+            
         },
         process.env.JWT_SECRET,
         {
