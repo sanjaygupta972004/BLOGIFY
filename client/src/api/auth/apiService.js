@@ -7,6 +7,7 @@ import {
   signOutSuccess,
   signOutFailure,
 } from "../../redux/user/userSlice";
+import { onSignOut } from "../../redux/profile/profileSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -77,6 +78,7 @@ const signOutHandler = async (dispatch, navigate) => {
     const response = await axios.get('/api/v1/users/sign-out');
     if (response.status === 200) {
       dispatch(signOutSuccess());
+      dispatch(onSignOut());
       navigate('/');
       toast.success('Signed out successfully.');
     } else {

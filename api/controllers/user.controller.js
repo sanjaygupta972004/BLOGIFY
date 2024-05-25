@@ -92,6 +92,7 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
         throw new ApiError(400, validatePassword(correctPassword))
     }
     const preUser = await User.findOne({ email })
+  
     if(preUser) {
         const token = preUser.accessTokenGenerator()
         const options = {
@@ -120,8 +121,6 @@ const signInWithGoogle = AsyncHandler(async (req, res) => {
         email : email,
         password: correctPassword,
         profileImage: profileImage,
-        isAdmin: user.isAdmin
-        
     })
 
     const token = user.accessTokenGenerator()

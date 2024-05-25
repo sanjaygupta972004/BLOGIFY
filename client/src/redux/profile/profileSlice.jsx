@@ -38,7 +38,9 @@ const profileSlice = createSlice({
     name: 'profile',
     initialState,
     reducers: {
-       
+        onSignOut: (state) => {
+            state.userProfile = null
+       }
     },
     extraReducers: (builder) =>{
          builder
@@ -70,5 +72,7 @@ const profileSlice = createSlice({
             })
     }
 })
+
+export const { onSignOut } = profileSlice.actions;
 
 export default profileSlice.reducer;
