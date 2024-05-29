@@ -1,12 +1,12 @@
 import React from 'react'
-import { useState,useEffect } from 'react'
+import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import DashProfile from '../components/DashProfile'
 import DashSidebar from '../components/DashSidebar'
 import SignOut from '../components/SignOut'
 const Dashboard = () => {
   const location = useLocation()
-  const [tab, setTab] = useState('')
+  const [tab, setTab] = React.useState('')
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search)
     const tabFromUrl = searchParams.get('tab')
