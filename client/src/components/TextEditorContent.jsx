@@ -3,7 +3,7 @@ import {Editor} from "@tinymce/tinymce-react"
 import {useSelector} from 'react-redux'
 
 // eslint-disable-next-line react/prop-types
-export const TextEditerContent = ({intialValue= "",label,handleChangeContent}) => {     
+export const TextEditorContent = ({initialValue= "",label,handleChangeContent}) => {     
    const[currentTheme, setCurrentTheme] = React.useState('dark')
    const {theme} = useSelector(state => state.theme)
    const editorRef = React.useRef("")
@@ -41,7 +41,7 @@ export const TextEditerContent = ({intialValue= "",label,handleChangeContent}) =
                   <Editor
                    apiKey= {import.meta.env.VITE_TINYURL_API_KEY}
                    onInit={(evt, editor) => editorRef.current = editor}
-                    initialValue= {intialValue}
+                    initialValue= {initialValue}
                     key = {currentTheme}
                     init={{
                       height: 600,
