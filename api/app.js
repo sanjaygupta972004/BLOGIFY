@@ -26,8 +26,10 @@ app.use(cookieParser());
 // routes   
 
 import userRouter from './routers/user.router.js';
+import postRouter from './routers/post.router.js';
 
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/posts', postRouter);
 
 app.use(errorMiddleware);
 
