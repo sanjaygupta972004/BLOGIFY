@@ -9,7 +9,7 @@ import SignUp from "./pages/SignUp"
 import SignIn from "./pages/SignIn"
 import FooterCom from "./components/Footer"
 import { PrivateRoute } from "./components/PrivateRoute"
-import AdminPrivateRoute from "./components/AdminPrivateRoute"
+import AdminPrivateRoute from "./components/post/AdminPrivateRoute"
 import  Post  from "./pages/Post"
 
 function App() {
