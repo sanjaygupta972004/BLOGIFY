@@ -5,7 +5,7 @@ export const isAdmin = AsyncHandler(async (req, _, next) => {
     try {
         const user = req.user; 
         if (!user ||!user.isAdmin) {
-            return next(new ApiError(403, 'You are not authorized to access this route'));
+            return next(new ApiError(403, 'You are not admin user so you are not authorized to access this route'));
         }
         next();
     

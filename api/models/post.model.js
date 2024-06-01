@@ -17,9 +17,9 @@ const postSchema = new Schema(
                 },
                 postImage: {
                         type: String,
-                        default: ""
+                        default: "https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg"
                 },
-                user: {
+                author: {
                         type: Schema.Types.ObjectId,
                         ref: "User"
                 }        
