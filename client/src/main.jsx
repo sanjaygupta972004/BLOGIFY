@@ -15,12 +15,14 @@ if (typeof global === 'undefined') {
 }
 global.Buffer = Buffer;
 
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
     <PersistGate persistor={persistor}>
         <ThemeProvider>
-          <App />
+            <App />
            <ToastContainer
                   position="top-center"
                   autoClose={3000}
