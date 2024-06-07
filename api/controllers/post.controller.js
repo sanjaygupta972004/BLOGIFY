@@ -6,8 +6,9 @@ import { ApiError } from "../utils/ApiError.js";
 
 const createPost = AsyncHandler(async (req, res) => {
       const {title , content, category, postImage,description} = req.body
+      console.log(req.body)
       if(!title,!content,!category, !description){
-        throw new ApiError(400,"All fields required")
+        throw new ApiError(400,"All fields are required")
       }  
       const userId = req.user?.id
       const user = await User.findById(userId)  
