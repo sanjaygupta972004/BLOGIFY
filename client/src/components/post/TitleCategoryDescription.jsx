@@ -1,11 +1,12 @@
 import React from 'react'
 import { TextInput, Select } from "flowbite-react";
 
-export  function TitleCategoryDescription({setTitle, setSelectCategory, setDescription}) {
+export  function TitleCategoryDescription({setTitle, setSelectCategory, setDescription,inputKey}) {
   return (
         <div className='flex flex-col '>
          <div className='flex flex-col sm:flex-row justify-between items-center w-full space-y-2 sm:pl-8 sm:pr-16'>
          <TextInput
+          key={inputKey}
           className='w-full sm:w-1/3 mb-2 sm:mb-0'
           label="Title"
           placeholder="Title"
@@ -14,9 +15,11 @@ export  function TitleCategoryDescription({setTitle, setSelectCategory, setDescr
           required
         />
         <Select className='w-1/2 sm:w-1/4'
+          key={`category-${inputKey}`}
           label="Category"
           id="category"
           onChange={(e) => setSelectCategory(e.target.value)}
+   
         >
           <option value="">Select Category</option>
           <option value="Frontend">Frontend</option>
@@ -30,6 +33,7 @@ export  function TitleCategoryDescription({setTitle, setSelectCategory, setDescr
          </div>
           <div>
            <TextInput
+                key={inputKey}
                 className='w-full sm:w-1/2 m-2 sm:mb-2 sm:pl-6 sm:pr-18'
                 label="Description"
                 placeholder="Description"

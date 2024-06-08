@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FileInput,Spinner,Button } from 'flowbite-react';
 import { upLoadImageFile } from '../../utils/helper';
 import { useState } from 'react';
@@ -10,6 +10,12 @@ export function UploadImgOnFirebase({setImageUrl}) {
   const [error, setError] = useState("");
   const [progress, setProgress] = useState(null);
   const[inputKey,setInputKey] = useState(new Date())
+
+  useEffect(() => {
+    if(error){
+      toast.error(error)
+    }
+  }, [error])
 
   const handleUploadImage = async (e) => {
     e.preventDefault();
@@ -50,7 +56,6 @@ export function UploadImgOnFirebase({setImageUrl}) {
     >
      { progress ?(<Spinner aria-label="Default status example" />): "Upload Image"}
     </Button>
-    {error && toast.error(error)}
   </div>
   )
 }

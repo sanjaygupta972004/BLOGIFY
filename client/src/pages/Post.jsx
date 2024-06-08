@@ -5,7 +5,8 @@ import { UploadImgOnFirebase } from '../components/post/UploadImgOnFirebase';
 import { TitleCategoryDescription } from '../components/post/TitleCategoryDescription';
 import { useCreatePostMutation } from '../api/post/ApiSlice';
 import { toast } from 'react-toastify';
-import { set } from 'mongoose';
+import { HiInformationCircle } from 'react-icons/hi';
+
 
 export default function Post() {
   const [content, setContent] = useState('');
@@ -15,6 +16,8 @@ export default function Post() {
   const [description, setDescription] = useState('');
   const [openEditor, setOpenEditor] = useState(false);
   const [clientError,setClienterror] = useState('');
+  const [inputKey, setInputKey] = useState(1);
+
 
   const handleChangeContent = (newContent) => {
     setContent(newContent);
@@ -42,9 +45,7 @@ export default function Post() {
 
     }
     try {
-
-      const res = await createPost(formData).unwrap();
-      console.log(res);
+       await createPost(formData).unwrap();
     } catch (error) {
       console.error('Failed to create post:', error.message);
       setClienterror('Failed to create post');
@@ -53,6 +54,9 @@ export default function Post() {
 
   useEffect(() => {
     if (isSuccess) {
+      setInputKey(2);
+      setOpenEditor(false);
+
       toast.success('Post created successfully');
     }
 
@@ -65,13 +69,15 @@ export default function Post() {
     <>
       <div className='flex min-h-screen min-w-full flex-col gap-3 h-fit p-4 mt-5'>
         <h1 className="mb-4 text-3xl font-bold leading-none tracking-tight text-gray-900 md:text-4xl text-center underline dark:text-white">
-          Create a new post
+          Create a <span className='text-red-600 '>New</span> post
         </h1>
-        <form className='flex w-full flex-col gap-4' onSubmit={handleSubmit}>
+        <form className='flex w-full flex-col gap-4' onSubmit={handleSubmit}
+        >
           <TitleCategoryDescription
             setTitle={setTitle}
             setSelectCategory={setSelectCategory}
             setDescription={setDescription}
+            inputKey={inputKey}
           />
           <UploadImgOnFirebase setImageUrl={setImageUrl} />
           <div className='w-full py-3'>
@@ -99,7 +105,9 @@ export default function Post() {
           >
             {isLoading ? <Spinner size="md" color={"white"} /> : 'Submit'}
           </Button>
-          {clientError && <Alert type="error">{clientError}</Alert>}
+         <div className=' w-full mx-auto px-3 py-2 font-normal text-xl sm:text-2xl'>
+           {clientError && <Alert  color="failure" icon={HiInformationCircle} size="md">{clientError}</Alert>}
+         </div>
         </form>
       </div>
     </>
