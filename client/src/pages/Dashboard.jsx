@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import DashProfile from '../components/DashProfile'
 import DashSidebar from '../components/DashSidebar'
 import SignOut from '../components/SignOut'
+import Post from './Post'
 const Dashboard = () => {
   const location = useLocation()
   const [tab, setTab] = React.useState('')

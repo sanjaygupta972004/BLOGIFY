@@ -3,10 +3,13 @@ import { Sidebar, SidebarItemGroup, SidebarItems } from "flowbite-react";
 import { HiArrowNarrowRight, HiUser } from "react-icons/hi";
 import { Link,useLocation } from "react-router-dom";
 import { useState,useEffect } from 'react'
+import { TfiWrite } from "react-icons/tfi";
+import { useSelector } from 'react-redux';
 
 const DashSidebar = () => {
    const location = useLocation()
   const [tab, setTab] = useState('')
+  const { currentUser } = useSelector(state => state.user)
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search)
     const tabFromUrl = searchParams.get('tab')
@@ -15,16 +18,16 @@ const DashSidebar = () => {
     }
   }, [location.search])
   return (
-    <Sidebar className='rounded-md w-full md:w-[19%] pt-[2px]'>
+    <Sidebar className='rounded-lg w-full md:w-[16%] pt-[2px]'>
       <SidebarItems>
         <SidebarItemGroup className=" sm:font-2xl font-xl px-1">
           <Link to= "/dashboard?tab=profile">
             <Sidebar.Item
               icon={HiUser}
-              label="User"
+              label={currentUser?.user?.isAdmin ? "Admin" : "User"}
               active={tab === "profile"}
               labelColor="dark"
-              className="font-mono"
+              className="font-mono text-[18px] cursor-pointer" 
               as={"div"}
               >
               Profile
@@ -36,7 +39,7 @@ const DashSidebar = () => {
             icon={HiArrowNarrowRight}
             title="Logout"
             active={tab === "sign-out"}
-            className=" cursor-pointer font-mono"
+            className=" cursor-pointer font-mono text-[18px]"
             labelColor="dark"
             as={"div"}
             >
@@ -44,16 +47,14 @@ const DashSidebar = () => {
             </Sidebar.Item>
           </Link>
            <br />
-          <Link to= "/dashboard?tab=profile">
+          <Link to= "/dashboard/write-post">
             <Sidebar.Item
-              icon={HiUser}
-              label="User"
-              active={tab === "profile"}
+              icon={TfiWrite}
               labelColor="dark"
-              className="font-mono"
+              className="font-mono cursor-pointer md:text-[18px]"
               as={"div"}
               >
-              Profile
+              Write-Blog
             </Sidebar.Item> 
           </Link>
         </SidebarItemGroup>
