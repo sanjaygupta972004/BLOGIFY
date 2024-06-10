@@ -8,16 +8,18 @@ export default function SignOut() {
   const [openModal, setOpenModal] = React.useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-  const { loading, error } = useSelector((state) => state.user) 
+    const { loading, error } = useSelector((state) => state.user) 
 
     const handleSignOut = async (e) => {
       e.preventDefault()
       await signOutHandler(dispatch, navigate)
       setOpenModal(false)
     }
+
   React.useEffect(() => {
       setOpenModal(true)
   }, [loading])
+  
   return (
      <div>
       <Modal popup  size= "md" title="Sign Out" show = {openModal} onClose={()=>setOpenModal(false)} >
@@ -32,7 +34,10 @@ export default function SignOut() {
               <Button color="success" onClick={handleSignOut}>
                 {"Yes, sign-out"}
               </Button>
-              <Button color="gray" onClick={() => setOpenModal(false)}>
+              <Button color="gray" onClick={() =>{
+                setOpenModal(false)
+                navigate(-1)
+              }}>
                 No, cancel
               </Button>
             </div>

@@ -7,13 +7,12 @@ import { signInSuccess } from "../redux/user/userSlice";
 
 
 export default function UpdateProfile() {
-    const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     username: "",
     password: ""
     });
-  
   const dispatch = useDispatch()
   const { currentUser } = useSelector(state => state.user)
   const { loading, profileError,userProfile } = useSelector(state => state.profile)
@@ -42,9 +41,9 @@ export default function UpdateProfile() {
     
 
 return (
-        <Card className="max-w-sm min-h-content">
+        <Card className="max-w-sm min-h-content w-fit h-fit ">
       {!showForm && (
-      <Button className=" w-full h-full text-2xl font-serif " onClick={() => setShowForm(true)}>Update-Profile</Button>
+      <Button className="text-3xl font-serif " onClick={() => setShowForm(true)}>Update-Profile</Button>
          )}  
         {showForm && (
          <form className="flex flex-col gap-4">

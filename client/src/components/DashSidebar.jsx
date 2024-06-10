@@ -15,9 +15,9 @@ const DashSidebar = () => {
     }
   }, [location.search])
   return (
-    <Sidebar className='w-full md:w-56 '>
+    <Sidebar className='rounded-md w-full md:w-[19%] pt-[2px]'>
       <SidebarItems>
-        <SidebarItemGroup className=" gap-y-5 sm:font-2xl font-xl ">
+        <SidebarItemGroup className=" sm:font-2xl font-xl px-1">
           <Link to= "/dashboard?tab=profile">
             <Sidebar.Item
               icon={HiUser}
@@ -30,6 +30,7 @@ const DashSidebar = () => {
               Profile
             </Sidebar.Item> 
           </Link>
+          <br />
           <Link to= "/dashboard?tab=sign-out">
           <Sidebar.Item
             icon={HiArrowNarrowRight}
@@ -41,6 +42,19 @@ const DashSidebar = () => {
             >
             Sign-Out
             </Sidebar.Item>
+          </Link>
+           <br />
+          <Link to= "/dashboard?tab=profile">
+            <Sidebar.Item
+              icon={HiUser}
+              label="User"
+              active={tab === "profile"}
+              labelColor="dark"
+              className="font-mono"
+              as={"div"}
+              >
+              Profile
+            </Sidebar.Item> 
           </Link>
         </SidebarItemGroup>
       </SidebarItems>

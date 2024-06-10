@@ -17,12 +17,12 @@ const Dashboard = () => {
   
 
   return (
-    <div className=' min-h-screen flex flex-col md:flex-row '>
-      <div className='md:w-56 w-full'>
-        <DashSidebar/>
-      </div>
+    <div className=' min-h-screen flex flex-col md:flex-row w-full gap-x-20 md:justify-between'>
+      <DashSidebar /> 
+     <div className='w-full sm:w-[30%] flex justify-center  md:min-w-[28%]'>
       {tab === 'profile' && <DashProfile />}
       {tab === 'sign-out' && <SignOut />}
+      </div>
    </div>
   )
 }

@@ -6,6 +6,9 @@ import {
   signOutStart,
   signOutSuccess,
   signOutFailure,
+  deleteCurrentUserFailure,
+  deleteCurrentUserStart,
+  deleteCurrentUserSuccess,
 } from "../../redux/user/userSlice";
 import { onSignOut } from "../../redux/profile/profileSlice";
 import axios from "axios";
@@ -95,9 +98,32 @@ const signOutHandler = async (dispatch, navigate) => {
   }
 };
 
+const deleteCurrentUserHandler = async (dispatch, navigate,userId) => {
+  try {
+    if(!userId){
+      dispatch(deleteCurrentUserFailure('Please provide userId'));
+      return;
+    }
+    dispatch(deleteCurrentUserStart());
+    const res = await axios.delete(`/api/v1/users/delete/${userId}`);
+    if (res.status === 200) {
+      dispatch(deleteCurrentUserSuccess());
+      dispatch(onSignOut());
+      navigate('/');
+      toast.success('Account deleted successfully.');
+    } else {
+      dispatch(deleteCurrentUserFailure(res.data.message || 'Failed to delete account.'));
+    }
+  } catch (error) {
+    if(error.response){
+      dispatch(deleteCurrentUserFailure(error.response?.data?.message))
+    }
+  }
+}
+
 export {
   SignInHandler,
   SignUpHandler,
   signOutHandler,
-
+  deleteCurrentUserHandler
 }

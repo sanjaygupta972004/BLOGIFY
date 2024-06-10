@@ -5,6 +5,7 @@ import { upLoadImageFile } from '../utils/helper'
 import UpdateProfile from './UpdateProfile'
 import { updateProfileImageAsync } from '../redux/profile/profileSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import DeleteAccount from './DeleteAccount'
 
 
 const DashProfile = () => {
@@ -55,9 +56,9 @@ const DashProfile = () => {
 
 
   return (
-    <div className='flex justify-center mt-10 w-full rounded-lg'>
-      <form className='flex flex-col gap-3 w-full md:w-1/2' >
-        <h1 className='text-center font-serif font-bold  text-2xl underline'> User_Profile</h1>
+    <div className='flex justify-center mt-10 w-full rounded-lg mr-7 min-h-fit'>
+      <form className='flex flex-col gap-5 w-full ' >
+        <h1 className='text-center text-3xl font-bold ml-2 dark:text-white  opacity-80 bg-gray-500 rounded-lg'> User_Profile</h1>
         <input
           type="file"
           ref={imageFileRef}
@@ -73,21 +74,28 @@ const DashProfile = () => {
             }}/>
         </div>
         <div className='flex flex-col justify-start items-start '>
-          <div className='text-xl font-serif sm:text-2xl p-4   '>
-            <h1 >
+          <div className='text-xl font-serif sm:text-[28px] p-4   '>
+            <h1 className='my-1'> <span className='px-4 md:text-3xl text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 rounded-lg'>userName:</span>
               {"@"+currentUser.user?.username}
             </h1>
             <h2>
+              <span className='px-4  md:text-3xl text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400'>userEmail:</span>
               {currentUser.user?.email}
             </h2>
           </div>
         </div>
-        <div>
+        <div className='ml-5 flex justify-between gap-3 flex-col md:flex-row  items-center'>
+          <div className='mt-2'> 
             <UpdateProfile/>
+          </div>
+          <div className='mt-2 '>
+          <DeleteAccount/>
+          </div>
         </div>
+           
         <div className='my-4 space-y-3 font-serif text-2xl'> 
             {
-              error && <Alert type='error'>{error}</Alert>  
+              error && <Alert type='error'>{error}</Alert>
             }
             {
               profileImageError && <Alert type='error'>{profileImageError}</Alert>
