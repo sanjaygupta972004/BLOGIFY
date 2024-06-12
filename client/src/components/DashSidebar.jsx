@@ -5,6 +5,7 @@ import { Link,useLocation } from "react-router-dom";
 import { useState,useEffect } from 'react'
 import { TfiWrite } from "react-icons/tfi";
 import { useSelector } from 'react-redux';
+import { MdPostAdd } from "react-icons/md";
 
 const DashSidebar = () => {
    const location = useLocation()
@@ -18,7 +19,7 @@ const DashSidebar = () => {
     }
   }, [location.search])
   return (
-    <Sidebar className='rounded-lg w-full md:w-[16%] pt-[2px]'>
+    <Sidebar className='rounded-lg w-full md:w-[16%] pt-[2px] '>
       <SidebarItems>
         <SidebarItemGroup className=" sm:font-2xl font-xl px-1">
           <Link to= "/dashboard?tab=profile">
@@ -57,6 +58,19 @@ const DashSidebar = () => {
               Write-Blog
             </Sidebar.Item> 
           </Link>
+          <br />
+          <Link to= "/dashboard?tab=blogs">
+            <Sidebar.Item
+              icon={MdPostAdd}
+              active={tab === "blogs"}
+              labelColor="dark"
+              className="font-mono text-[18px] cursor-pointer" 
+              as={"div"}
+              >
+              Blogs
+            </Sidebar.Item>
+          </Link>
+          <br />
         </SidebarItemGroup>
       </SidebarItems>
   </Sidebar>
