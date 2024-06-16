@@ -22,7 +22,7 @@ const Dashboard = () => {
         <DashSidebar />
           
       {tab === 'blogs' && (
-        <div className='flex-grow w-full mr-4 mt-1 opacity-25'>
+        <div className='flex-grow w-full mr-4 mt-1 '>
           <GetDashboardPost />
         </div>
       )}

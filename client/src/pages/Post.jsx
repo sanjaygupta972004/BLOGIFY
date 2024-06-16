@@ -3,10 +3,10 @@ import { Button, Spinner, Alert } from "flowbite-react";
 import { TextEditorContent } from '../components/post/TextEditorContent';
 import { UploadImgOnFirebase } from '../components/post/UploadImgOnFirebase';
 import { TitleCategoryDescription } from '../components/post/TitleCategoryDescription';
-import { useCreatePostMutation } from '../api/post/ApiSlice';
-import { toast } from 'react-toastify';
 import { HiInformationCircle } from 'react-icons/hi';
-
+import { createPostAsync } from '../redux/post/PostSlice';
+import { useSelector,useDispatch } from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 
 export default function Post() {
   const [content, setContent] = useState('');
@@ -15,55 +15,44 @@ export default function Post() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [openEditor, setOpenEditor] = useState(false);
-  const [clientError,setClienterror] = useState('');
-  const [inputKey, setInputKey] = useState(1);
+  const [inputKey, setInputKey] = useState(new Date());
 
-
-  const handleChangeContent = (newContent) => {
-    setContent(newContent);
-  };
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
    
-  const [createPost, { isSuccess, isLoading, isError, error }] = useCreatePostMutation();
+  const {isLoading,error,isSuccess,posts} = useSelector((state) => state.post)
+  console.log("isLoading",isLoading)
+  console.log("error",error)
+ 
+  const handleChangeContent = (newContent) => {
+     if(newContent){
+      setContent(newContent)
+     }
+  };
+    
 
-  const handleSubmit = async (e) => {
+ const handleSubmit =  (e) => {
     e.preventDefault();
-    setClienterror('');
-    if (!title || !description || !content  || !selectCategory || title === '' || description === '' || content === '') {
-      setClienterror('All fields are required to create a Blog Post');
-      return;
-    }
-    if(!imageUrl){
-      setClienterror('Please upload an image');
-      return;
-    }
     const formData = {
       title: title,
       description: description,
       content: content,
       category: selectCategory,
       postImage: imageUrl,
+    }
+    if(formData){
+      dispatch(createPostAsync({formData}))
+    }
 
-    }
-    try {
-       await createPost(formData).unwrap();
-    } catch (error) {
-      console.error('Failed to create post:', error.message);
-      setClienterror('Failed to create post');
-    }
-  };
+  }
 
   useEffect(() => {
     if (isSuccess) {
-      setInputKey(2);
+      setInputKey(new Date());
+      navigate("/dashboard")
       setOpenEditor(false);
-
-      toast.success('Post created successfully');
     }
-
-    if (isError) {
-      setClienterror(error||'Failed to create post');
-    }
-  }, [isSuccess, isError, error]);
+  }, [isSuccess, error]);
 
   return (
     <>
@@ -106,7 +95,7 @@ export default function Post() {
             {isLoading ? <Spinner size="md" color={"white"} /> : 'Submit'}
           </Button>
          <div className=' w-full mx-auto px-3 py-2 font-normal text-xl sm:text-2xl'>
-           {clientError && <Alert  color="failure" icon={HiInformationCircle} size="md">{clientError}</Alert>}
+           {error&& <Alert  color="failure" icon={HiInformationCircle} size="md">{error}</Alert>}
          </div>
         </form>
       </div>

@@ -4,10 +4,10 @@ import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { getOneMonthRange } from "../utils/getOneMonthRange.js";
+import { isValidObjectId } from "mongoose";
 
 const createPost = AsyncHandler(async (req, res) => {
       const {title , content, category, postImage,description} = req.body
-      console.log(req.body)
       if(!title,!content,!category, !description){
         throw new ApiError(400,"All fields are required")
       }  
@@ -53,12 +53,13 @@ const getPosts = AsyncHandler(async (req, res) => {
 
   let posts = await Post.find(query).populate("author", "username email").sort(directionPost).skip(startIndex).limit(limit)
 
- 
  if(posts.length === 0){
    throw new ApiError(404,"Any post is not available")
  }
 
- const totalPosts = await Post.countDocuments()
+  const totalPosts = await Post.countDocuments()
+  const totalPostsAccordingToQuery =  posts.length
+
 
  const { start, end } = getOneMonthRange(new Date())
 
@@ -73,12 +74,28 @@ const getPosts = AsyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200,{posts,totalPosts,lastMonthTotalPost},"Posts fetched successfully"))  
+    .json(new ApiResponse(200,{posts,totalPosts,lastMonthTotalPost,totalPostsAccordingToQuery},"Posts fetched successfully"))  
+
+})
+
+const getPost = AsyncHandler(async (req, res) => {
+const {postId} = req.params
+if(!isValidObjectId(postId)){
+  throw new ApiError(400,"postId is not valid")
+}
+const post = await Post.findById(postId)
+if(!post){
+  throw new ApiError(404,"Post not found")
+}
+return res
+  .status(200)
+  .json(new ApiResponse(200,post,"Post fetched successfully"))
 
 })
 
 export {
         createPost,
         getPosts,
+        getPost
 }
 

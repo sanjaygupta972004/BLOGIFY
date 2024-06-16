@@ -58,7 +58,8 @@ const DashProfile = () => {
   return (
     <div className='flex justify-center mt-10 w-full rounded-lg mr-7 min-h-fit'>
       <form className='flex flex-col gap-5 w-full ' >
-        <h1 className='text-center text-3xl font-bold ml-2 dark:text-white  opacity-80 bg-gray-500 rounded-lg'> User_Profile</h1>
+        <h1 className='text-start text-3xl mx-3 px-5 dark:text-white  font-serif opacity-80 sm:text-4xl text-gray-100
+         dark:opacity-60 bg-gray-500 rounded-lg'> User-Profile</h1>
         <input
           type="file"
           ref={imageFileRef}
