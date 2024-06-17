@@ -4,9 +4,11 @@ import { TextEditorContent } from '../components/post/TextEditorContent';
 import { UploadImgOnFirebase } from '../components/post/UploadImgOnFirebase';
 import { TitleCategoryDescription } from '../components/post/TitleCategoryDescription';
 import { HiInformationCircle } from 'react-icons/hi';
-import { createPostAsync } from '../redux/post/PostSlice';
+import { createPostAsync ,reSetIsSuccess} from '../redux/post/PostSlice';
 import { useSelector,useDispatch } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
+
+
 
 export default function Post() {
   const [content, setContent] = useState('');
@@ -20,9 +22,7 @@ export default function Post() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
    
-  const {isLoading,error,isSuccess,posts} = useSelector((state) => state.post)
-  console.log("isLoading",isLoading)
-  console.log("error",error)
+  const {isLoading,error,isSuccess} = useSelector((state) => state.post)
  
   const handleChangeContent = (newContent) => {
      if(newContent){
@@ -31,7 +31,7 @@ export default function Post() {
   };
     
 
- const handleSubmit =  (e) => {
+ const handleSubmit =  async(e) => {
     e.preventDefault();
     const formData = {
       title: title,
@@ -42,17 +42,18 @@ export default function Post() {
     }
     if(formData){
       dispatch(createPostAsync({formData}))
-    }
-
   }
+ }
 
   useEffect(() => {
-    if (isSuccess) {
-      setInputKey(new Date());
-      navigate("/dashboard")
-      setOpenEditor(false);
+    if(isSuccess){
+      navigate('/dashboard')
+      setInputKey(new Date())
+      setOpenEditor(false)
+      dispatch(reSetIsSuccess())
     }
-  }, [isSuccess, error]);
+  },[navigate,dispatch,isSuccess])
+
 
   return (
     <>

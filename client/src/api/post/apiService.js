@@ -2,13 +2,12 @@ import axios from 'axios';
 import {toast} from 'react-toastify';
 
  const createPost = async ({formData}) => {
-     console.log("formData in api service",formData)
      const {title,description,postImage,category} = formData;
      if(!title || !description  || !category){
          throw new Error("All fields are required to create a Blog Post");
      }
         if(!postImage){
-            throw new Error("Please upload an image");
+            throw new Error("Please upload an attachment image to create a post");
         }
  try {
          const  res =  await axios.post("/api/v1/posts/createPost",formData);

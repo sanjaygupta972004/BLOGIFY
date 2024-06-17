@@ -31,7 +31,8 @@ const initialState = {
     loading: false,
     profileError: null,
     profileImageError: null,
-    userProfile:null
+    userProfile:null,
+    
 }
 
 const profileSlice = createSlice({
