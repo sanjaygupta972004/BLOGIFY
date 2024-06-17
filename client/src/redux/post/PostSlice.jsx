@@ -1,5 +1,5 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
-import {createPost} from  "../../api/post/apiService"
+import {createPost,getAuthorPosts} from  "../../api/post/apiService"
 
 export const createPostAsync = createAsyncThunk(
         "post/createPost",
@@ -12,11 +12,28 @@ export const createPostAsync = createAsyncThunk(
         }
 )
 
+export const getAuthorPostAsync = createAsyncThunk(
+        "post/getAuthorPost",
+        async({authorId}, {rejectWithValue}) => {
+                try {
+                        if(authorId){
+                                const res =  await getAuthorPosts({authorId})
+                                return res.data? res.data: res
+                        }else{
+                           return rejectWithValue("Author Id is required to get Author Post")
+                        }
+                } catch (error) {
+                        return rejectWithValue(error.message)
+                }
+        }
+)
+
 const initialState = {
         isLoading :false,
         error: null,
         isSuccess: false,
-        postData: null
+        postData: null,
+        authorPosts: []
 }
 
 const postSlice = createSlice({
@@ -43,6 +60,25 @@ const postSlice = createSlice({
                 
                 })
                 .addCase(createPostAsync.rejected, (state, action) => {
+                        state.isLoading = false;
+                        state.error = action.payload;
+                        state.isSuccess = false;
+                
+                })
+                .addCase(getAuthorPostAsync.pending, (state) => {
+                        state.isLoading = true;
+                        state.error = null;
+                        state.isSuccess = false;
+                
+                })
+                .addCase(getAuthorPostAsync.fulfilled, (state, action) => {
+                        state.isLoading = false;
+                        state.authorPosts = action.payload;
+                        state.error = null;
+                        state.isSuccess = true;
+                
+                })
+                .addCase(getAuthorPostAsync.rejected, (state, action) => {
                         state.isLoading = false;
                         state.error = action.payload;
                         state.isSuccess = false;

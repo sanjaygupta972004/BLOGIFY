@@ -29,9 +29,16 @@ import {toast} from 'react-toastify';
 }
  }
 
-const getPosts = async (query) => {
+const getAuthorPosts = async ({authorId}) => {
 try {
+        const res = await axios.get(`/api/v1/posts/getPosts/?authorId=${authorId}`);
+        if(res.data && res.data.statusCode === 200){
+            return res.data;
+        }else{
+            throw new Error(res.data.message || "Failed to authorPosts");
         
+        }
+
 } catch (axiosError) {
         if(axiosError.response){
                 throw new Error(axiosError.response.data.message)
@@ -43,5 +50,5 @@ try {
 
 export {
         createPost,
-        getPosts,
+        getAuthorPosts
 }

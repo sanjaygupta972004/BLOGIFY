@@ -1,7 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Table,Button} from "flowbite-react"
+import {useSelector,useDispatch} from "react-redux"
+import { getAuthorPostAsync } from '../redux/post/PostSlice'
+import { useState } from 'react'
+
+
 
 export default function GetDashboardPost() {
+
+  const dispatch = useDispatch();
+  const {authorPosts} = useSelector(state => state.post);
+  const {currentUser} = useSelector(state => state.user);
+
+  const posts = authorPosts && authorPosts.posts;
+  const totalAuthorPosts = authorPosts && authorPosts.totalPostsAccordingToQuery;
+  console.log("totalAuthorPosts",totalAuthorPosts)
+                
+  console.log("posts",posts)
+ 
+  useEffect(() => {
+   if(currentUser.user){
+    dispatch(getAuthorPostAsync({authorId:currentUser.user.id}))
+   }
+  }, [dispatch,currentUser.user.id])
+
+
+
+
 
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-2  scrollbar scrollbar-thumb-sky-700 scrollbar-track-sky-300 h-35'>
