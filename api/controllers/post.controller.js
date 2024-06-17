@@ -50,7 +50,6 @@ const getPosts = AsyncHandler(async (req, res) => {
   {description: { $regex: req.query.searchTerm, $options: 'i'}}
 
 ]
-
   let posts = await Post.find(query).populate("author", "username email").sort(directionPost).skip(startIndex).limit(limit)
 
  if(posts.length === 0){
@@ -85,7 +84,7 @@ if(!isValidObjectId(postId)){
 }
 const post = await Post.findById(postId)
 if(!post){
-  throw new ApiError(404,"Post not found")
+  throw new ApiError(404,"Post is not available in our database with this id")
 }
 return res
   .status(200)
@@ -93,9 +92,63 @@ return res
 
 })
 
+const updatePost = AsyncHandler(async (req, res) => {
+  const {postId} = req.params
+  const {title, description,category } = req.body
+  if(!title,!description,!category){
+    throw new ApiError(400,"title, description and category are required")
+  }
+  if(!isValidObjectId(postId)){
+    throw new ApiError(400,"postId is not valid")
+  }
+  const authorId = req.user?.id
+
+  const post = await Post.findById(postId)
+  if(!post){
+    throw new ApiError(404,"Post is not available in our database with this id")
+  }
+  if(authorId.toString() !== post.author.toString()){
+    throw new ApiError(403,"You are not authorized to update this post")
+  }
+  const updatedPost = await Post.findByIdAndUpdate(postId,{
+    title,
+    description,
+    category
+  },
+  {new: true})
+  if(!updatedPost){
+    throw new ApiError(500,"Something went wrong while updating post")
+  }
+  return res 
+    .status(200)
+    .json(new ApiResponse(200,updatedPost,"Post updated successfully"))
+ })
+
+const deletePost = AsyncHandler(async (req, res) => {
+  const {postId} = req.params
+  if(!isValidObjectId(postId)){
+    throw new ApiError(400,"postId is not valid")
+  }
+  const authorId = req.user?.id
+  const post = await Post.findById(postId)
+  if(authorId.toString() !== post.author.toString()){
+    throw new ApiError(403,"You are not authorized to delete this post")
+  }
+  const deletedPost = await Post.findByIdAndDelete(postId)
+  if(!deletedPost){
+    throw new ApiError(500,"Something went wrong while deleting post")
+  }
+  return res 
+    .status(200)
+    .json(new ApiResponse(200,{},"Post deleted successfully"))
+ })
+
+
 export {
         createPost,
         getPosts,
-        getPost
+        getPost,
+        updatePost,
+        deletePost
 }
 
