@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 import DashProfile from '../components/DashProfile'
 import DashSidebar from '../components/DashSidebar'
 import SignOut from '../components/SignOut'
-import GetDashboardPost from '../components/getAuthorPosts'
+import GetAuthorPosts from '../components/post/GetAuthorPosts'
 const Dashboard = () => {
   const location = useLocation()
   const [tab, setTab] = React.useState('')
@@ -23,7 +23,7 @@ const Dashboard = () => {
           
       {tab === 'blogs' && (
         <div className='flex-grow w-full mr-4 mt-1 '>
-          <GetDashboardPost />
+          <GetAuthorPosts />
         </div>
       )}
       

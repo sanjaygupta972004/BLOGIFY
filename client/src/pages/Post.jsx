@@ -18,7 +18,7 @@ export default function Post() {
   const [description, setDescription] = useState('');
   const [openEditor, setOpenEditor] = useState(false);
   const [inputKey, setInputKey] = useState(new Date());
-
+ 
   const dispatch = useDispatch()
   const navigate = useNavigate()
    
@@ -40,20 +40,24 @@ export default function Post() {
       category: selectCategory,
       postImage: imageUrl,
     }
-    if(formData){
-      dispatch(createPostAsync({formData}))
-  }
+    try {
+      if(formData){
+        await dispatch(createPostAsync({formData})).unwrap()
+        setInputKey(new Date())
+        setOpenEditor(false)
+        navigate('/dashboard')
+        dispatch(reSetIsSuccess())
+    }
+    } catch (error) {
+      throw new Error(error.message)
+    }
  }
 
   useEffect(() => {
     if(isSuccess){
-      navigate('/dashboard')
-      setInputKey(new Date())
-      setOpenEditor(false)
-      dispatch(reSetIsSuccess())
+     dispatch(reSetIsSuccess())
     }
   },[navigate,dispatch,isSuccess])
-
 
   return (
     <>

@@ -30,7 +30,7 @@ export function TitleCategoryDescription({ setTitle, setSelectCategory, setDescr
 
   return (
     <div className='flex flex-col'>
-      <div className='flex flex-col sm:flex-row justify-between items-center w-full space-y-2 sm:pl-8 sm:pr-16'>
+      <div className='flex flex-col sm:flex-row justify-between items-center w-full space-y-3 sm:pl-8 sm:pr-16'>
         <TextInput
           key={inputKey}
           className='w-full sm:w-1/3 mb-2 sm:mb-0'
@@ -41,7 +41,7 @@ export function TitleCategoryDescription({ setTitle, setSelectCategory, setDescr
           required
         />
         <Select
-          className='w-1/2 sm:w-1/4'
+          className='w-1/2 sm:w-1/4 py-3 '
           label='Category'
           id='category'
           onChange={handleCategoryChange}

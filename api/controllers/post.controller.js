@@ -123,6 +123,7 @@ const updatePost = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200,updatedPost,"Post updated successfully"))
  })
+ 
 
 const deletePost = AsyncHandler(async (req, res) => {
   const {postId} = req.params
