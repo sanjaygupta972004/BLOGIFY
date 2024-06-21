@@ -14,10 +14,14 @@ export const createPostAsync = createAsyncThunk(
 
 export const getAuthorPostAsync = createAsyncThunk(
         "post/getAuthorPost",
-        async({authorId}, {rejectWithValue}) => {
+        async({authorId,startIndex,limit}, {rejectWithValue}) => {
                 try {
                         if(authorId){
-                                const res =  await getAuthorPosts({authorId})
+                                const res =  await getAuthorPosts({
+                                        authorId,
+                                        startIndex,
+                                        limit
+                                })
                                 return res.data? res.data: res
                         }else{
                            return rejectWithValue("Author Id is required to get Author Post")

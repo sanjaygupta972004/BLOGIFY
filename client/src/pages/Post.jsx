@@ -42,13 +42,15 @@ export default function Post() {
     }
     try {
       if(formData){
-        await dispatch(createPostAsync({formData})).unwrap()
+      const res =  await dispatch(createPostAsync({formData})).unwrap()
+      console.log(res)
         setInputKey(new Date())
         setOpenEditor(false)
         navigate('/dashboard')
         dispatch(reSetIsSuccess())
     }
     } catch (error) {
+      console.log(error)
       throw new Error(error.message)
     }
  }
