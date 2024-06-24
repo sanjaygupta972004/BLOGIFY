@@ -1,8 +1,10 @@
 import React, { useEffect,useState } from 'react'
 import {Table,Button,Spinner} from "flowbite-react"
 import {useSelector,useDispatch} from "react-redux"
-import { getAuthorPostAsync } from '../../redux/post/PostSlice'
+import { getAuthorPostAsync, reSetIsSuccess } from '../../redux/post/PostSlice'
 import { toast } from 'react-toastify';
+import DeletePost from './DeletePost';
+import AdminPrivateRoute from './AdminPrivateRoute';
 
 export default function GetAuthorPosts() {
 
@@ -11,7 +13,8 @@ export default function GetAuthorPosts() {
   const {currentUser} = useSelector(state => state.user);
   const[startIndex,setStartIndex] = useState(1)
   const[limit,setLimit] = useState(9)
-     
+  const[resetPostData ,setResetPostData] = useState(false)
+  
   const posts = authorPosts && authorPosts.posts ? authorPosts.posts:[];
   const totalAuthorPosts = authorPosts && authorPosts.totalPostsAccordingToQuery;
    
@@ -26,12 +29,16 @@ export default function GetAuthorPosts() {
    if(error){
      toast.error(error) 
    }
+   if(resetPostData){
+      dispatch(reSetIsSuccess())
+      setResetPostData(false)
+   }
 
-  }, [dispatch,currentUser.user?.id,limit])
+  }, [dispatch,currentUser.user?.id,limit,resetPostData])
 
 
 const loadMorePosts = () => {
-  setStartIndex(startIndex + 1)
+  setStartIndex(startIndex)
   setLimit(limit + 5)
 }
 
@@ -50,8 +57,8 @@ const loadMorePosts = () => {
           <Table.HeadCell>
             <span className=" text-red-500 rounded-lg ">Delete</span>
           </Table.HeadCell>
-        </Table.Head>
-        {posts && posts.length === 0 ? <div className='text-center text-gray-500 dark:text-white'>No Posts Found</div> :(
+        </Table.Head> 
+        {posts && posts.length === 0 ? <div className=' text-gray-500 items-center bg-red-500 rounded-md text-sm ml-20 w-full p-3 mt-4 opacity-75  shadow-2xl dark:text-white'>No Posts Found</div> :(
           posts.map((post) => (
         <Table.Body className=' divide-y-1 ' key={post._id}>
           <Table.Row className=' bg-white dark:bg-gray-600 dark:border-gray-500 font-semibold 
@@ -72,7 +79,10 @@ const loadMorePosts = () => {
               <Button gradientMonochrome="teal">edit</Button>
             </Table.Cell>
             <Table.Cell>
-              <Button gradientMonochrome="failure" >Delete</Button>
+              <AdminPrivateRoute>
+                <DeletePost postId={post._id}
+                   resetHandler = {setResetPostData} />
+              </AdminPrivateRoute>
             </Table.Cell>
           </Table.Row>
         </Table.Body>

@@ -56,7 +56,35 @@ try {
 }
 }
 
+const deletePost = async ({postId}) => {
+    if(!postId){
+        throw new Error("Post Id is required to delete a post");
+    }
+    try {
+        const res = await axios.delete(`/api/v1/posts/deletePost/${postId}`);
+        if(res.data && res.data.statusCode === 200){
+            toast.success("Post deleted successfully");
+            return res.data;
+        }else{
+            throw new Error(res.data.message || "Failed to delete a post");
+        }
+    } catch (error) {
+        if(error.response){
+            throw new Error(error.response.data.message);
+        }else{
+            throw new Error("Something wrong while deleting a post");
+        }
+    }
+
+}
+
+
+const updatePost = async ({postId,formData}) => {
+
+}
+
 export {
         createPost,
-        getAuthorPosts
+        getAuthorPosts,
+        deletePost
 }

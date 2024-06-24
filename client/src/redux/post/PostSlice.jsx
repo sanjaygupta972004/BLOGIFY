@@ -1,5 +1,5 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
-import {createPost,getAuthorPosts} from  "../../api/post/apiService"
+import {createPost,getAuthorPosts,deletePost} from  "../../api/post/apiService"
 
 export const createPostAsync = createAsyncThunk(
         "post/createPost",
@@ -32,10 +32,29 @@ export const getAuthorPostAsync = createAsyncThunk(
         }
 )
 
+
+export const deletePostAsync = createAsyncThunk(
+        "post/deletePost",
+        async({postId}, {rejectWithValue}) => {
+                try {
+                        if(postId){
+                                return await deletePost({postId})
+                        }else{
+                                return rejectWithValue("Post Id is required to delete a post")
+                        }
+                } catch (error) {
+                        return rejectWithValue(error.message)
+                }
+        }
+)
+
+
+
 const initialState = {
         isLoading :false,
         error: null,
         isSuccess: false,
+        createPostError: null,
         postData: null,
         authorPosts: []
 }
@@ -46,26 +65,27 @@ const postSlice = createSlice({
         reducers:{
                 reSetIsSuccess:(state) => {
                         state.isSuccess = false;
+                        state.createPostError = null;
                 }
         },
         extraReducers:(builder) => {
                 builder
                 .addCase(createPostAsync.pending, (state) => {
                         state.isLoading = true;
-                        state.error = null;
+                        state.createPostError = null;
                         state.isSuccess = false;
 
                 })
                 .addCase(createPostAsync.fulfilled, (state, action) => {
                         state.isLoading = false;
                         state.postData = action.payload;
-                        state.error = null;
+                        state.createPostError = null;
                         state.isSuccess = true;
                 
                 })
                 .addCase(createPostAsync.rejected, (state, action) => {
                         state.isLoading = false;
-                        state.error = action.payload;
+                        state.createPostError = action.payload;
                         state.isSuccess = false;
                 
                 })
@@ -83,6 +103,26 @@ const postSlice = createSlice({
                 
                 })
                 .addCase(getAuthorPostAsync.rejected, (state, action) => {
+                        state.isLoading = false;
+                        state.error = action.payload;
+                        state.isSuccess = false;
+                
+                })
+
+                .addCase(deletePostAsync.pending, (state) => {
+                        state.isLoading = true;
+                        state.error = null;
+                        state.isSuccess = false;
+                
+                })
+                .addCase(deletePostAsync.fulfilled, (state, action) => {
+                        state.isLoading = false;
+                        state.postData = action.payload;
+                        state.error = null;
+                        state.isSuccess = true;
+                
+                })
+                .addCase(deletePostAsync.rejected, (state, action) => {
                         state.isLoading = false;
                         state.error = action.payload;
                         state.isSuccess = false;

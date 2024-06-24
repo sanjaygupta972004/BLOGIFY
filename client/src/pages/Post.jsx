@@ -22,7 +22,7 @@ export default function Post() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
    
-  const {isLoading,error,isSuccess} = useSelector((state) => state.post)
+  const {isLoading,createPostError,isSuccess} = useSelector((state) => state.post)
  
   const handleChangeContent = (newContent) => {
      if(newContent){
@@ -42,8 +42,7 @@ export default function Post() {
     }
     try {
       if(formData){
-      const res =  await dispatch(createPostAsync({formData})).unwrap()
-      console.log(res)
+        await dispatch(createPostAsync({formData})).unwrap()
         setInputKey(new Date())
         setOpenEditor(false)
         navigate('/dashboard')
@@ -102,7 +101,7 @@ export default function Post() {
             {isLoading ? <Spinner size="md" color={"white"} /> : 'Submit'}
           </Button>
          <div className=' w-full mx-auto px-3 py-2 font-normal text-xl sm:text-2xl'>
-           {error&& <Alert  color="failure" icon={HiInformationCircle} size="md">{error}</Alert>}
+           {createPostError&& <Alert  color="failure" icon={HiInformationCircle} size="md">{createPostError}</Alert>}
          </div>
         </form>
       </div>
