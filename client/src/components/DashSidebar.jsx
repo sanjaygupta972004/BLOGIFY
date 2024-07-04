@@ -48,7 +48,7 @@ const DashSidebar = () => {
             </Sidebar.Item>
           </Link>
            <br />
-          <Link to= "/dashboard/write-post">
+          <Link to= "/newPost/write-blog">
             <Sidebar.Item
               icon={TfiWrite}
               labelColor="dark"

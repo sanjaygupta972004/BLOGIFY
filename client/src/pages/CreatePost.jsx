@@ -10,7 +10,7 @@ import {useNavigate} from 'react-router-dom';
 
 
 
-export default function Post() {
+export default function CreatePost() {
   const [content, setContent] = useState('');
   const [selectCategory, setSelectCategory] = useState('');
   const [imageUrl, setImageUrl] = useState('');

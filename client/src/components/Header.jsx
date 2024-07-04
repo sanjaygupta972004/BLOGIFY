@@ -6,6 +6,8 @@ import { FaSun } from "react-icons/fa6"
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleTheme } from '../redux/theme/themeSlice';
 import React from 'react'
+import { MdLogout } from "react-icons/md";
+import { FaUserTie } from "react-icons/fa6";
 const Header = () => {
   const path = useLocation().pathname
   const dispatch = useDispatch()
@@ -46,35 +48,46 @@ const Header = () => {
         <Link to="/sign-in" >
           <Button gradientDuoTone = "purpleToBlue" className= {`font-mono ${currentUser?"w-12 h-12":"w-15 h-15"} text-sm sm:text-xl`} >
             {currentUser ? (
-              <Dropdown
+            <Dropdown
               arrowIcon={false}
-              inline
+               className='w-[250px] h-75 p-1'
+                inline
               label={
                 <Avatar
+                  img={currentUser.user?.profileImage}
                   alt="user"
-                  size="sm"
+                  size="md"
                   rounded
+                  className='w-12 h-12'
                 />
               }  >
-                <Dropdown.Header>
-                  <span className=' block text-sm  text-start '>@{currentUser.user?.username.toLowerCase()}</span>
-                  <span className=' block truncate font-medium text-md' >{currentUser.user?.email }</span>
+                <Dropdown.Header >
+                  <span className=' block text-sm  text-start sm:text-xl'>@{currentUser.user?.username.toLowerCase()}</span>
+                  <span className=' block text-start text-sm sm:text-xl' >{currentUser.user?.email }</span>
                 </Dropdown.Header>
+                <br/>
                 <Link to="/dashboard?tab=profile" >
-                  <Dropdown.Item
+                 <div className='flex '> 
+                  <FaUserTie className='w-6 h-6 mt-2'/>
+                 <Dropdown.Item
+                   className='text-sm sm:text-xl hover:underline rounded-lg'
                     as={"div"}
                   >Profile
                   </Dropdown.Item>
+                 </div>
                 </Link>
                 <DropdownDivider />
-                <Link to="/dashboard?tab=sign-out" >
+                 <Link to="/dashboard?tab=sign-out" >
+                  <div className='flex '>
+                  <MdLogout className='w-6 h-6 mt-2'/>
                   <Dropdown.Item
+                    className='text-sm sm:text-xl hover:underline rounded-lg'
                     as={"div"}
                   >Sign-Out
                   </Dropdown.Item>
+                  </div>
                 </Link>
-
-                
+           
             </Dropdown>
             )
           
@@ -92,6 +105,9 @@ const Header = () => {
           </Navbar.Link>
           <Navbar.Link active = {path ==='/projects'} as ={"div"} className=' font-medium text-[20px] hover:underline'>
             <Link to="/projects">Projects</Link>
+          </Navbar.Link>
+          <Navbar.Link active = {path ==='/newPost/write-blog'} as ={"div"} className=' font-medium text-[20px] hover:underline'>
+            <Link to="/newPost/write-blog">Write-Blog</Link>
           </Navbar.Link>
         </Navbar.Collapse>
     </Navbar>
